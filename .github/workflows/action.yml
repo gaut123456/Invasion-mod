@@ -20,7 +20,6 @@ jobs:
         with:
           file_path: "build/libs/invasionmod-1.0.0.jar"
           game_endpoint: "minecraft"
-          relations: "fabric-api:requiredDependency"
-          game_versions: "Minecraft 1.18:1.18.1,Java 17,Fabric"
+          game_versions: "Minecraft 1.20.1,Java 17,Forge"
           project_id: "1148949"
           token: "${{ secrets.CF_API_TOKEN }}"
