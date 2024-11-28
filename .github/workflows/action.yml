@@ -18,9 +18,9 @@ jobs:
       - name: "Upload to CurseForge"
         uses: itsmeow/curseforge-upload@v3
         with:
-          file_path: "build/libs/invasionmod-${{ steps.build.outputs.version }}.jar"
+          file_path: "build/libs/invasionmod-1.0.0.jar"
           game_endpoint: "minecraft"
           relations: "fabric-api:requiredDependency"
           game_versions: "Minecraft 1.18:1.18.1,Java 17,Fabric"
-          project_id: "0"
+          project_id: "1148949"
           token: "${{ secrets.CF_API_TOKEN }}"
