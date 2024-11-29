@@ -1,4 +1,4 @@
-package com.example.examplemod.utils;
+package com.example.invasionmod.utils;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,9 +16,12 @@ import java.util.Random;
 
 public class MobUtils {
     private static final Logger LOGGER = LogManager.getLogger();
+
+    private static final EntityType<? extends Mob> BABYZOMBI = EntityType.ZOMBIE;
+
     private static final Map<EntityType<? extends Mob>, Integer> mobWeights = new HashMap<>() {{
         put(EntityType.ZOMBIE, 10);
-        put(BABZYZOMBI, 9);
+        put(BABYZOMBI, 9);
         put(EntityType.SKELETON, 10);
         put(EntityType.CREEPER, 8);
         put(EntityType.SPIDER, 9);
@@ -56,7 +59,6 @@ public class MobUtils {
         put(EntityType.ENDER_DRAGON, 1);
 
     }};
-    private static final EntityType<? extends Mob> BABZYZOMBI = EntityType.ZOMBIE;
 
 
     public static void spawnRandomMob(ServerLevel world, Random random) {
@@ -71,7 +73,7 @@ public class MobUtils {
         Mob mob = randomMobType.create(world);
 
         if (mob != null) {
-            if (randomMobType == BABZYZOMBI && mob instanceof Zombie) {
+            if (randomMobType == BABYZOMBI && mob instanceof Zombie) {
                 ((Zombie) mob).setBaby(true);
             }
             mob.moveTo(pos.getX(), pos.getY(), pos.getZ(), world.random.nextFloat() * 360.0F, 0.0F);

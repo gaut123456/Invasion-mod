@@ -19,7 +19,7 @@ jobs:
         uses: itsmeow/curseforge-upload@v3
         with:
           release_type: "alpha"
-          file_path: "build/libs/invasionmod-1.0.0.jar"
+          file_path: "build/libs/invasionmod-0.0.1.jar"
           game_endpoint: "minecraft"
           game_versions: "Minecraft 1.20.1,Java 17,Forge"
           project_id: "1148949"

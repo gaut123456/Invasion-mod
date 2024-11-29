@@ -1,7 +1,7 @@
-package com.example.examplemod;
+package com.example.invasionmod;
 
-import com.example.examplemod.mobs.Invasion;
-import com.example.examplemod.utils.MessageUtils;
+import com.example.invasionmod.mobs.Invasion;
+import com.example.invasionmod.utils.MessageUtils;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
@@ -59,7 +59,7 @@ public class InvasionMod {
         if (Config.logDirtBlock)
             LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
 
-        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
+        LOGGER.info("{}{}", Config.magicNumberIntroduction, Config.magicNumber);
         Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 

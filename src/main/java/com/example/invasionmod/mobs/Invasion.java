@@ -1,16 +1,11 @@
-package com.example.examplemod.mobs;
+package com.example.invasionmod.mobs;
 
-import com.example.examplemod.utils.MessageUtils;
-import com.example.examplemod.utils.MobUtils;
+import com.example.invasionmod.utils.MessageUtils;
+import com.example.invasionmod.utils.MobUtils;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.core.BlockPos;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -38,8 +33,14 @@ public class Invasion {
 
             if (data.getMobsToSpawn() <= maxMobsToSpawn) {
                 for (int i = 0; i < data.getMobsToSpawn(); i++) {
-                    MobUtils.spawnRandomMob(world, random);
+                    world.getServer().execute(() -> {
+                        MobUtils.spawnRandomMob(world, random);
+                    });
+                    MessageUtils.sendMessageToAllPlayers(world, "Mob spawned! : " + data.getMobsToSpawn());
                 }
+            }
+            else {
+                MessageUtils.sendMessageToAllPlayers(world, "Max mobs to spawn reached!");
             }
 
             if (invasionDuration.incrementAndGet() >= maxInvasionDuration) {
@@ -51,7 +52,7 @@ public class Invasion {
 
         scheduler.scheduleAtFixedRate(() -> {
             if (data.getMobsToSpawn() < maxMobsToSpawn) {
-                data.setMobsToSpawn(data.getMobsToSpawn() + 1); // Persist the updated count
+                data.setMobsToSpawn(data.getMobsToSpawn() + 1);
             }
         }, 30, 30, TimeUnit.SECONDS);
     }

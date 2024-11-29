@@ -1,4 +1,4 @@
-package com.example.examplemod.utils;
+package com.example.invasionmod.utils;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
