@@ -1,5 +1,7 @@
 package com.example.invasionmod;
 
+import com.example.invasionmod.UIOverlayRenderer.InvasionPhaseUI;
+import com.example.invasionmod.config.Config;
 import com.example.invasionmod.mobs.Invasion;
 import com.example.invasionmod.utils.MessageUtils;
 import com.mojang.logging.LogUtils;
@@ -10,7 +12,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -36,13 +37,13 @@ public class InvasionMod {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    // Instance of Invasion class
-    private final Invasion invasionInstance = new Invasion();
+    // Removed instance from constructor
+    private Invasion invasionInstance;
 
     public InvasionMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::commonSetup);  // Initialize Invasion in common setup
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
@@ -54,13 +55,11 @@ public class InvasionMod {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+
         LOGGER.info("HELLO FROM COMMON SETUP");
 
-        if (Config.logDirtBlock)
-            LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
-
-        LOGGER.info("{}{}", Config.magicNumberIntroduction, Config.magicNumber);
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+        // Initialize Invasion instance after config is loaded
+        invasionInstance = new Invasion();
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -83,7 +82,6 @@ public class InvasionMod {
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            // Delegate to the invasion class to send the message
             MessageUtils.sendMessageToPlayer(player, "§4Beware... §8The darkness stirs, §4and they are coming. §cThe invasion begins now. §6Prepare for the end!");
         }
     }
@@ -94,6 +92,9 @@ public class InvasionMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            event.enqueueWork(() -> {
+                new InvasionPhaseUI();
+            });
         }
     }
 }
